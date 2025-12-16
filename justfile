@@ -170,3 +170,5 @@ full-check:
     @just build-docs
     @just test-all
     @echo '👍 {{GREEN}} Linting, docs and tests all good.{{NORMAL}}'
+
+set windows-shell := ["powershell.exe", "-NoProfile", "-NoLogo", "-Command"]

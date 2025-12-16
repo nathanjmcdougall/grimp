@@ -2,6 +2,11 @@
 Changelog
 =========
 
+latest
+----------------
+
+* Improve contribution experience for Windows developers using Just.
+
 3.14 (2025-12-10)
 -----------------
 
