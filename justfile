@@ -75,13 +75,13 @@ update-snapshots:
 [working-directory: 'rust']
 format-rust:
     @cargo fmt
-    @echo Formatted Rust code.
+    @echo 'Formatted Rust code.'
 
 # Format the Python code.
 [group('formatting')]
 format-python:
     @uv run ruff format
-    @echo Formatted Python code.
+    @echo 'Formatted Python code.'
 
 # Format all code.
 [group('formatting')]
@@ -92,13 +92,13 @@ format:
 # Lint Python code.
 [group('linting')]
 lint-python:
-    @echo Running ruff format...
+    @echo 'Running ruff format...'
     @uv run ruff format --check
-    @echo Running ruff check...
+    @echo 'Running ruff check...'
     @uv run ruff check
-    @echo Running mypy...
+    @echo 'Running mypy...'
     @uv run mypy src/grimp tests
-    @echo Running Import Linter...
+    @echo 'Running Import Linter...'
     @uv run lint-imports
 
 # Lint Rust code using cargo fmt and clippy
@@ -122,11 +122,11 @@ autofix-python:
 # Run linters.
 [group('linting')]
 lint:
-    @echo Linting Python...
+    @echo 'Linting Python...'
     @just lint-python
-    @echo Linting Rust...
+    @echo 'Linting Rust...'
     @just lint-rust
-    @echo
+    @echo ''
     @echo '👍 {{GREEN}} Linting all good.{{NORMAL}}'
 
 # Build docs.
