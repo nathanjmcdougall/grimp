@@ -37,7 +37,7 @@ class _NamespacePackageEncountered(GrimpException):
         warnings.warn(
             "NamespacePackageEncountered is deprecated; graphs can now be built from "
             "namespace packages starting from Grimp 3.14. This exception will not be "
-            "raised by Grimp anymore.",
+            "raised by Grimp anymore, and will be removed in Grimp 3.16.",
             DeprecationWarning,
             stacklevel=2,
         )
