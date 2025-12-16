@@ -3,9 +3,10 @@ Changelog
 =========
 
 latest
------------------
+------
 
 * Deprecate the `NamespacePackageEncountered` exception.
+* Improve contribution experience for Windows developers using Just.
 
 3.14 (2025-12-10)
 -----------------
