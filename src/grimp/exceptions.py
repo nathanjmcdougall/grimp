@@ -1,6 +1,13 @@
 import warnings
 
 
+def __getattr__(name: str):
+    if name == "NamespacePackageEncountered":
+        _NamespacePackageEncountered._warn_deprecated()
+        return _NamespacePackageEncountered
+    raise AttributeError
+
+
 class GrimpException(Exception):
     """
     Base exception for all custom Grimp exceptions to inherit.
@@ -19,9 +26,14 @@ class NoSuchContainer(GrimpException):
     """
 
 
-class NamespacePackageEncountered(GrimpException):
+class _NamespacePackageEncountered(GrimpException):
+    """
+    Deprecated.
+    """
+
     # https://github.com/python-grimp/grimp/issues/272
-    def __init__(self, *args, **kwargs):
+    @staticmethod
+    def _warn_deprecated():
         warnings.warn(
             "NamespacePackageEncountered is deprecated; graphs can now be built from "
             "namespace packages starting from Grimp 3.14. This exception will not be "
@@ -29,7 +41,6 @@ class NamespacePackageEncountered(GrimpException):
             DeprecationWarning,
             stacklevel=2,
         )
-        super().__init__(*args, **kwargs)
 
 
 class NotATopLevelModule(GrimpException):
