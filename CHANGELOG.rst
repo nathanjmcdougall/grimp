@@ -2,6 +2,11 @@
 Changelog
 =========
 
+latest
+-----------------
+
+* Deprecate the `NamespacePackageEncountered` exception.
+
 3.14 (2025-12-10)
 -----------------
 
