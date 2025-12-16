@@ -1,3 +1,6 @@
+import warnings
+
+
 class GrimpException(Exception):
     """
     Base exception for all custom Grimp exceptions to inherit.
@@ -17,12 +20,16 @@ class NoSuchContainer(GrimpException):
 
 
 class NamespacePackageEncountered(GrimpException):
-    """
-    Indicates that there was no __init__.py at the top level.
-
-    This indicates a namespace package (see PEP 420), which is not currently supported. More
-    typically this is just an oversight which can be fixed by adding the __init__.py file.
-    """
+    # https://github.com/python-grimp/grimp/issues/272
+    def __init__(self, *args, **kwargs):
+        warnings.warn(
+            "NamespacePackageEncountered is deprecated; graphs can now be built from "
+            "namespace packages starting from Grimp 3.14. This exception will not be "
+            "raised by Grimp anymore.",
+            DeprecationWarning,
+            stacklevel=2,
+        )
+        super().__init__(*args, **kwargs)
 
 
 class NotATopLevelModule(GrimpException):
