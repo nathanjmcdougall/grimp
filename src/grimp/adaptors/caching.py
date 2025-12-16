@@ -2,7 +2,6 @@ import hashlib
 
 import json
 import logging
-from typing import Optional
 
 from grimp.application.ports.filesystem import BasicFileSystem
 from grimp.application.ports.modulefinder import FoundPackage, ModuleFile
@@ -13,7 +12,7 @@ from ..application.ports.caching import CacheMiss
 from grimp import _rustgrimp as rust  # type: ignore[attr-defined]
 
 logger = logging.getLogger(__name__)
-PrimitiveFormat = dict[str, list[tuple[str, Optional[int], str]]]
+PrimitiveFormat = dict[str, list[tuple[str, int | None, str]]]
 
 
 class CacheFileNamer:
