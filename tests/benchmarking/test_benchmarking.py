@@ -54,18 +54,12 @@ TOP_LEVEL_PACKAGE_DEPENDENCIES = {
                     heads=frozenset({"mypackage.domain.7960519247.6215972208"}),
                     middle=(),
                     tails=frozenset(
-                        {
-                            "mypackage.application.7537183614.6928774480.5676105139.3275676604"
-                            # noqa:E501
-                        }
+                        {"mypackage.application.7537183614.6928774480.5676105139.3275676604"}
                     ),
                 ),
                 Route(
                     heads=frozenset(
-                        {
-                            "mypackage.domain.6928774480.5676105139.1330171288.7588443317.4661445087"
-                            # noqa:E501
-                        }
+                        {"mypackage.domain.6928774480.5676105139.1330171288.7588443317.4661445087"}
                     ),
                     middle=(),
                     tails=frozenset({"mypackage.application.7537183614.3430454356.1518604543"}),
@@ -84,10 +78,7 @@ TOP_LEVEL_PACKAGE_DEPENDENCIES = {
                 ),
                 Route(
                     heads=frozenset(
-                        {
-                            "mypackage.domain.6928774480.1028759677.7960519247.2888779155.7486857426"
-                            # noqa:E501
-                        }
+                        {"mypackage.domain.6928774480.1028759677.7960519247.2888779155.7486857426"}
                     ),
                     middle=(),
                     tails=frozenset({"mypackage.application.7537183614.3430454356.1518604543"}),
@@ -139,18 +130,14 @@ TOP_LEVEL_PACKAGE_DEPENDENCIES = {
                     heads=frozenset(
                         {
                             "mypackage.application.7537183614.2538372545.1153384736.6297289996",
-                            # noqa:E501
                             "mypackage.application.7537183614.2538372545.1153384736.6404547812.6297289996",
-                            # noqa:E501
                         }
                     ),
                     middle=("mypackage.6398020133.9075581450.6529869526.6297289996",),
                     tails=frozenset(
                         {
                             "mypackage.plugins.5634303718.6180716911.7582995238.1039461003.2943193489",
-                            # noqa:E501
                             "mypackage.plugins.5634303718.6180716911.7582995238.1039461003.6322703811",
-                            # noqa:E501
                         }
                     ),
                 )

@@ -1,3 +1,4 @@
+import re
 import pytest  # type: ignore
 
 from grimp.application.graph import ImportGraph
@@ -119,7 +120,7 @@ class TestAddSquashedModule:
 
         with pytest.raises(
             ValueError,
-            match=(
+            match=re.escape(
                 "Cannot add a squashed module when it is already present in the graph as an "
                 "unsquashed module, or vice versa."
             ),
@@ -134,7 +135,7 @@ class TestAddSquashedModule:
 
         with pytest.raises(
             ValueError,
-            match=(
+            match=re.escape(
                 "Cannot add a squashed module when it is already present in the graph as an "
                 "unsquashed module, or vice versa."
             ),
@@ -148,7 +149,7 @@ class TestAddSquashedModule:
         graph.add_module("mypackage.foo", is_squashed=True)
 
         with pytest.raises(
-            ValueError, match="Module is a descendant of squashed module mypackage.foo."
+            ValueError, match=re.escape("Module is a descendant of squashed module mypackage.foo.")
         ):
             graph.add_module(module_name)
 

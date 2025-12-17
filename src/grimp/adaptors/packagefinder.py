@@ -21,9 +21,14 @@ class ImportLibPackageFinder(AbstractPackageFinder):
             logger.debug(f"sys.path: {sys.path}")
             raise ValueError(f"Could not find package '{package_name}' in your Python path.")
 
-        if spec.has_location and spec.origin:
-            if not self._is_a_package(spec, file_system) or self._has_a_non_namespace_parent(spec):
-                raise exceptions.NotATopLevelModule
+        if (
+            spec.has_location
+            and spec.origin
+            and (
+                not self._is_a_package(spec, file_system) or self._has_a_non_namespace_parent(spec)
+            )
+        ):
+            raise exceptions.NotATopLevelModule
 
         assert spec.submodule_search_locations  # This should be the case if spec.has_location.
         return set(spec.submodule_search_locations)
