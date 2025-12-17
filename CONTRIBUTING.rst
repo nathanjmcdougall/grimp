@@ -122,6 +122,7 @@ Before you push
 
 It's a good idea to run ``just full-check`` before getting a review.
 This will run linters, docs build and tests under every supported Python version.
+You can automatically fix many lint errors using ``just autofix``.
 
 Benchmarking
 ============

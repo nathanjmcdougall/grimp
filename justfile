@@ -77,7 +77,7 @@ lint-python:
     @echo 'Running Import Linter...'
     @uv run lint-imports
 
-# Lint Rust code using cargo fmt and clippy
+# Lint Rust code using cargo fmt and clippy.
 [working-directory: 'rust']
 [group('linting')]
 lint-rust:
@@ -89,11 +89,19 @@ lint-rust:
 [group('linting')]
 autofix-rust:
     @cargo clippy --all-targets --all-features --fix --allow-staged --allow-dirty
+    @just format-rust
 
-# Fix any ruff errors
+# Fix any ruff errors.
 [group('linting')]
 autofix-python:
     @uv run ruff check --fix
+    @just format-python
+
+# Fix any lint errors.
+[group('linting')]
+autofix:
+    @just autofix-rust
+    @just autofix-python
 
 # Run linters.
 [group('linting')]
