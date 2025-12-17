@@ -6,13 +6,13 @@ from .domain.valueobjects import DirectImport, Module, Layer
 from .main import build_graph
 
 __all__ = [
-    "Module",
     "DetailedImport",
     "DirectImport",
     "Import",
     "ImportGraph",
+    "Layer",
+    "Module",
     "PackageDependency",
     "Route",
     "build_graph",
-    "Layer",
 ]

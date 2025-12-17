@@ -730,13 +730,6 @@ def test_trims_whitespace_from_start_of_line_contents():
         ("import namespace.foo.green.alpha.one", "namespace.foo.green"),
         ("from namespace.foo.green.alpha import one", "namespace.foo.green"),
         ("from ..green.alpha import one", "namespace.foo.green"),
-        ("from .. import green", "namespace.foo.green"),
-        ("import namespace.foo.green.alpha", "namespace.foo.green"),
-        ("from namespace.foo.green import alpha", "namespace.foo.green"),
-        ("from ..green import alpha", "namespace.foo.green"),
-        ("import namespace.foo.green.alpha.one", "namespace.foo.green"),
-        ("from namespace.foo.green.alpha import one", "namespace.foo.green"),
-        ("from ..green.alpha import one", "namespace.foo.green"),
     ),
 )
 def test_external_package_imports_for_namespace_packages(statement, expected_module_name):

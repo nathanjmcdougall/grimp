@@ -1,3 +1,4 @@
+import re
 from unittest.mock import sentinel
 import pytest  # type: ignore
 
@@ -63,7 +64,9 @@ class TestBuildGraph:
         # Check that the external packages are squashed modules.
         if include_external_packages:
             for module in ("external", "decimal"):
-                with pytest.raises(ValueError, match="Cannot find children of a squashed module."):
+                with pytest.raises(
+                    ValueError, match=re.escape("Cannot find children of a squashed module.")
+                ):
                     graph.find_children(module)
 
     def test_boolean_additional_package_raises_type_error(self):
@@ -75,7 +78,7 @@ class TestBuildGraph:
         as the second argument, and it's possible it might have been called
         as a positional argument.
         """
-        with pytest.raises(TypeError, match="Package names must be strings, got bool."):
+        with pytest.raises(TypeError, match=re.escape("Package names must be strings, got bool.")):
             usecases.build_graph("mypackage", True)
 
     @pytest.mark.parametrize(

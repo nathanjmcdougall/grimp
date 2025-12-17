@@ -1,3 +1,4 @@
+import re
 import pytest  # type: ignore
 
 from grimp.application.graph import ImportGraph
@@ -33,7 +34,7 @@ def test_find_children_raises_exception_for_squashed_module():
 
     graph.add_module(module, is_squashed=True)
 
-    with pytest.raises(ValueError, match="Cannot find children of a squashed module."):
+    with pytest.raises(ValueError, match=re.escape("Cannot find children of a squashed module.")):
         graph.find_children(module)
 
 
@@ -75,7 +76,9 @@ def test_find_descendants_raises_exception_for_squashed_module():
 
     graph.add_module(module, is_squashed=True)
 
-    with pytest.raises(ValueError, match="Cannot find descendants of a squashed module."):
+    with pytest.raises(
+        ValueError, match=re.escape("Cannot find descendants of a squashed module.")
+    ):
         graph.find_descendants(module)
 
 

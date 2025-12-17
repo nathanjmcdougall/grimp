@@ -1,3 +1,4 @@
+import re
 import pytest  # type: ignore
 
 from grimp.application.graph import ImportGraph
@@ -112,14 +113,14 @@ class TestFindShortestChain:
     def test_raises_value_error_if_importer_not_present(self):
         graph = ImportGraph()
 
-        with pytest.raises(ValueError, match="Module foo is not present in the graph."):
+        with pytest.raises(ValueError, match=re.escape("Module foo is not present in the graph.")):
             graph.find_shortest_chain(importer="foo", imported="bar")
 
     def test_raises_value_error_if_imported_not_present(self):
         graph = ImportGraph()
         graph.add_module("foo")
 
-        with pytest.raises(ValueError, match="Module bar is not present in the graph."):
+        with pytest.raises(ValueError, match=re.escape("Module bar is not present in the graph.")):
             graph.find_shortest_chain(importer="foo", imported="bar")
 
     def test_find_shortest_chain_copes_with_cycle(self):
@@ -164,7 +165,7 @@ class TestFindShortestChain:
 
         one_chain = (source, a, b, c, destination)
         other_chain = (source, d, e, f, destination)
-        assert (result == one_chain) or (result == other_chain)
+        assert result in (one_chain, other_chain)
 
     @pytest.mark.parametrize(
         "as_packages, expected_result",
@@ -201,7 +202,7 @@ class TestFindShortestChains:
         graph.add_module(importer)
         graph.add_module(imported)
 
-        with pytest.raises(ValueError, match="Modules have shared descendants."):
+        with pytest.raises(ValueError, match=re.escape("Modules have shared descendants.")):
             graph.find_shortest_chains(importer=importer, imported=imported, as_packages=True)
 
     @pytest.mark.parametrize(

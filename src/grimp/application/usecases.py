@@ -53,7 +53,7 @@ def build_graph(
 
     found_packages = _find_packages(
         file_system=file_system,
-        package_names=[package_name] + list(additional_package_names),
+        package_names=[package_name, *additional_package_names],
     )
 
     imports_by_module = _scan_packages(

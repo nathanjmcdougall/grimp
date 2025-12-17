@@ -83,7 +83,7 @@ class TestSingleOrNoContainer:
         self, specify_container: bool, start: str, end: str, route_middle: list[str]
     ):
         graph = self._build_legal_graph()
-        import_pairs = _pairwise([start] + route_middle + [end])
+        import_pairs = _pairwise([start, *route_middle, end])
         for importer, imported in import_pairs:
             graph.add_import(importer=importer, imported=imported)
 
@@ -342,7 +342,7 @@ class TestSingleOrNoContainer:
             ),
         }
 
-        assert (result == first_option) or (result == second_option)
+        assert result in (first_option, second_option)
 
     def _build_legal_graph(self):
         graph = ImportGraph()
@@ -479,7 +479,7 @@ class TestIndependentLayers:
         self, specify_container: bool, start: str, end: str, route_middle: list[str]
     ):
         graph = self._build_legal_graph()
-        import_pairs = _pairwise([start] + route_middle + [end])
+        import_pairs = _pairwise([start, *route_middle, end])
         for importer, imported in import_pairs:
             graph.add_import(importer=importer, imported=imported)
 
@@ -668,7 +668,7 @@ class TestMultiplePackages:
         self, start: str, end: str, route_middle: list[str]
     ):
         graph = self._build_legal_graph()
-        import_pairs = _pairwise([start] + route_middle + [end])
+        import_pairs = _pairwise([start, *route_middle, end])
         for importer, imported in import_pairs:
             graph.add_import(importer=importer, imported=imported)
 
@@ -1104,12 +1104,12 @@ class TestClosedLayers:
         modules = []
         for layer in layers:
             assert len(layer.module_tails) == 1
-            module = list(layer.module_tails)[0]
+            module = next(iter(layer.module_tails))
             graph.add_module(module)
             modules.append(module)
 
         # Legal imports, from higher layer to immediate lower layer
-        for higher_module, lower_module in zip(modules[:-1], modules[1:]):
+        for higher_module, lower_module in itertools.pairwise(modules):
             graph.add_import(importer=higher_module, imported=lower_module)
 
         return graph
