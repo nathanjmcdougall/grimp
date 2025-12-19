@@ -419,21 +419,23 @@ class ImportGraph:
         included in the import chain. For example, given the layers high -> mid (closed) -> low then
         all import chains from high -> low must go via mid.
 
-        Arguments:
-            layers:     A sequence, each element of which consists either of a `Layer`, the name
-                      of a layer module or a set of sibling modules. If containers
-                      are also specified, then these names must be relative to the container.
-                      The order is from higher to lower level layers. Any layers that don't
-                      exist in the graph will be ignored.
+        Args:
+            layers: A sequence, each element of which consists either of a `Layer`, the name
+                    of a layer module or a set of sibling modules. If containers
+                    are also specified, then these names must be relative to the container.
+                    The order is from higher to lower level layers. Any layers that don't
+                    exist in the graph will be ignored.
             containers: The parent modules of the layers, as absolute names that you could import,
-                      such as "mypackage.foo". (Optional.)
+                        such as "mypackage.foo". (Optional.)
 
-        Returns the illegal dependencies in the form of a set of PackageDependency objects.
-        Each package dependency is for a different permutation of two layers for which there
-        is a violation, and contains information about the illegal chains of imports from the
-        lower layer (the 'upstream') to the higher layer (the 'downstream').
+        Returns:
+            The illegal dependencies in the form of a set of PackageDependency objects.
+            Each package dependency is for a different permutation of two layers for which there
+            is a violation, and contains information about the illegal chains of imports from the
+            lower layer (the 'upstream') to the higher layer (the 'downstream').
 
-        Raises NoSuchContainer if the container is not a module in the graph.
+        Raises:
+            NoSuchContainer: if the container is not a module in the graph.
         """
         layers = _parse_layers(layers)
         try:
