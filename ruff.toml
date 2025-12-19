@@ -24,6 +24,7 @@ lint.ignore = [
   "PT007",   # [pytest-parametrize-values-wrong-type]   TODO enable.        Inconsistent use of `@pytest.mark.parametrize("value", ("a", "b", "c"))` versus `...["a", "b", "c"])` in parameterizations.
   "RET504",  # [unnecessary-assign]                     Controversial.      A micro-optimization but hurts readability.
   "RET505",  # [superfluous-else-return]                Controversial.      Explicit `else` blocks can improve readability.
+  "S101",    # [assert]                                 Controversial.       `assert` statements are sometimes appropriate for type-checking purposes.
   "SIM108",  # [if-else-block-instead-of-if-exp]        Controversial.      Ternary/Binary in-line expressions often hurt readability.
   "SIM118",  # [in-dict-keys]                           Controversial.      `if key in dict.keys()` sometimes has clearer intent than `if key in dict`.
   "TD",      # [missing-space-after-todo-colon]         Controversial.      Different projects use different conventions for FIXME/TODO comments.  

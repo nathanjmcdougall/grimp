@@ -97,8 +97,7 @@ class Cache(AbstractCache):
         )
         cache._build_mtime_map()
         cache._build_data_map()
-        if not cache.cache_dir:
-            raise AssertionError
+        assert cache.cache_dir
         return cache
 
     @classmethod

@@ -37,14 +37,11 @@ class ImportLibPackageFinder(AbstractPackageFinder):
         ):
             raise exceptions.NotATopLevelModule
 
-        if not spec.submodule_search_locations:
-            # This should never be the case the case if spec.has_location.
-            raise AssertionError
+        assert spec.submodule_search_locations  # This should be the case if spec.has_location.
         return set(spec.submodule_search_locations)
 
     def _is_a_package(self, spec: ModuleSpec, file_system: AbstractFileSystem) -> bool:
-        if not spec.origin:
-            raise AssertionError
+        assert spec.origin
         filename = file_system.split(spec.origin)[1]
         return filename == "__init__.py"
 
@@ -56,6 +53,5 @@ class ImportLibPackageFinder(AbstractPackageFinder):
             return False
 
         root_spec = importlib.util.find_spec(module.parent.name)
-        if not root_spec:
-            raise AssertionError
+        assert root_spec
         return root_spec.has_location
