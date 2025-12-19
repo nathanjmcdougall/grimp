@@ -60,5 +60,5 @@ class TestSourceSyntaxError:
 
 class TestNamespacePackageEncountered:
     def test_deprecated_access(self):
-        with pytest.warns(DeprecationWarning):
+        with pytest.warns(DeprecationWarning, match="NamespacePackageEncountered is deprecated"):
             exceptions.NamespacePackageEncountered
