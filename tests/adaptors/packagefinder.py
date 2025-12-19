@@ -1,13 +1,9 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING
+from collections.abc import Mapping
 
+from grimp.application.ports.filesystem import AbstractFileSystem
 from grimp.application.ports.packagefinder import AbstractPackageFinder
-
-if TYPE_CHECKING:
-    from collections.abc import Mapping
-
-    from grimp.application.ports.filesystem import AbstractFileSystem
 
 
 class BaseFakePackageFinder(AbstractPackageFinder):

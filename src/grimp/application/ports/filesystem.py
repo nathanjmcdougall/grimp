@@ -1,10 +1,8 @@
 from __future__ import annotations
 
 import abc
-from typing import TYPE_CHECKING, Protocol
-
-if TYPE_CHECKING:
-    from collections.abc import Iterator
+from collections.abc import Iterator
+from typing import Protocol
 
 
 class AbstractFileSystem(abc.ABC):

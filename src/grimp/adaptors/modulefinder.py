@@ -1,15 +1,11 @@
 from __future__ import annotations
 
 import logging
-from typing import TYPE_CHECKING
+from collections.abc import Iterable, Set
 
 from grimp.application.ports import modulefinder
+from grimp.application.ports.filesystem import AbstractFileSystem
 from grimp.domain.valueobjects import Module
-
-if TYPE_CHECKING:
-    from collections.abc import Iterable, Set
-
-    from grimp.application.ports.filesystem import AbstractFileSystem
 
 logger = logging.getLogger(__name__)
 

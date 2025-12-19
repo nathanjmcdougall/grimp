@@ -3,7 +3,7 @@ from __future__ import annotations
 import itertools
 import logging
 import re
-from typing import TYPE_CHECKING
+from collections.abc import Iterable
 
 import pytest
 
@@ -11,9 +11,6 @@ from grimp import PackageDependency, Route
 from grimp.application.graph import ImportGraph
 from grimp.domain.valueobjects import Layer
 from grimp.exceptions import NoSuchContainer
-
-if TYPE_CHECKING:
-    from collections.abc import Iterable
 
 
 class TestSingleOrNoContainer:

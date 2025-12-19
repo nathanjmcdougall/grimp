@@ -1,6 +1,7 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, TypedDict
+from collections.abc import Sequence
+from typing import TypedDict
 
 from grimp import _rustgrimp as rust  # type: ignore[attr-defined]
 from grimp.domain.analysis import PackageDependency, Route
@@ -11,9 +12,6 @@ from grimp.exceptions import (
     ModuleNotPresent,
     NoSuchContainer,
 )
-
-if TYPE_CHECKING:
-    from collections.abc import Sequence
 
 
 class Import(TypedDict):

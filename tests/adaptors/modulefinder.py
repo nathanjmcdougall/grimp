@@ -1,12 +1,7 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING
-
-from grimp.application.ports.modulefinder import AbstractModuleFinder, FoundPackage
-
-if TYPE_CHECKING:
-    from grimp.application.ports.filesystem import AbstractFileSystem
-    from grimp.application.ports.modulefinder import ModuleFile
+from grimp.application.ports.filesystem import AbstractFileSystem
+from grimp.application.ports.modulefinder import AbstractModuleFinder, FoundPackage, ModuleFile
 
 
 class BaseFakeModuleFinder(AbstractModuleFinder):

@@ -3,16 +3,12 @@ from __future__ import annotations
 import importlib.util
 import logging
 import sys
-from typing import TYPE_CHECKING
+from importlib.machinery import ModuleSpec
 
 from grimp import exceptions
+from grimp.application.ports.filesystem import AbstractFileSystem
 from grimp.application.ports.packagefinder import AbstractPackageFinder
 from grimp.domain.valueobjects import Module
-
-if TYPE_CHECKING:
-    from importlib.machinery import ModuleSpec
-
-    from grimp.application.ports.filesystem import AbstractFileSystem
 
 logger = logging.getLogger(__name__)
 

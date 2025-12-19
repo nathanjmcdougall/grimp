@@ -1,11 +1,8 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING
+from types import TracebackType
 
 from grimp.application.ports.timing import Timer
-
-if TYPE_CHECKING:
-    from types import TracebackType
 
 
 class FakeTimer(Timer):

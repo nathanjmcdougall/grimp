@@ -3,17 +3,15 @@ from __future__ import annotations
 import hashlib
 import json
 import logging
-from typing import TYPE_CHECKING, Any
+from typing import Any
 
 from grimp import _rustgrimp as rust  # type: ignore[attr-defined]
+from grimp.application.ports.filesystem import BasicFileSystem
+from grimp.application.ports.modulefinder import FoundPackage, ModuleFile
+from grimp.domain.valueobjects import DirectImport, Module
 
 from ..application.ports.caching import Cache as AbstractCache
 from ..application.ports.caching import CacheMiss
-
-if TYPE_CHECKING:
-    from grimp.application.ports.filesystem import BasicFileSystem
-    from grimp.application.ports.modulefinder import FoundPackage, ModuleFile
-    from grimp.domain.valueobjects import DirectImport, Module
 
 logger = logging.getLogger(__name__)
 PrimitiveFormat = dict[str, list[tuple[str, int | None, str]]]

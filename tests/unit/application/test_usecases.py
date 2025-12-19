@@ -1,20 +1,17 @@
 from __future__ import annotations
 
 import re
-from typing import TYPE_CHECKING
 from unittest.mock import sentinel
 
 import pytest
 
 from grimp.application import usecases
 from grimp.application.ports.caching import Cache
+from grimp.application.ports.modulefinder import ModuleFile
+from grimp.domain.valueobjects import DirectImport, Module
 from tests.adaptors.filesystem import FakeFileSystem
 from tests.adaptors.packagefinder import BaseFakePackageFinder
 from tests.config import override_settings
-
-if TYPE_CHECKING:
-    from grimp.application.ports.modulefinder import ModuleFile
-    from grimp.domain.valueobjects import DirectImport, Module
 
 
 class TestBuildGraph:

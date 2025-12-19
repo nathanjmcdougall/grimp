@@ -1,15 +1,12 @@
 from __future__ import annotations
 
 import abc
+from collections.abc import Set
 from dataclasses import dataclass
-from typing import TYPE_CHECKING
 
-if TYPE_CHECKING:
-    from collections.abc import Set
+from grimp.domain.valueobjects import Module
 
-    from grimp.domain.valueobjects import Module
-
-    from .filesystem import AbstractFileSystem
+from .filesystem import AbstractFileSystem
 
 
 @dataclass(frozen=True, order=True)

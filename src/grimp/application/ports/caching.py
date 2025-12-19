@@ -1,12 +1,9 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING
+from grimp.application.ports.modulefinder import FoundPackage, ModuleFile
+from grimp.domain.valueobjects import DirectImport, Module
 
-if TYPE_CHECKING:
-    from grimp.application.ports.modulefinder import FoundPackage, ModuleFile
-    from grimp.domain.valueobjects import DirectImport, Module
-
-    from .filesystem import BasicFileSystem
+from .filesystem import BasicFileSystem
 
 
 class CacheMiss(Exception):

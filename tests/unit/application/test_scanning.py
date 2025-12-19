@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING
+from collections.abc import Set
 
 import pytest
 
@@ -9,9 +9,6 @@ from grimp.application import scanning
 from grimp.application.ports.modulefinder import FoundPackage, ModuleFile
 from grimp.domain.valueobjects import DirectImport, Module
 from tests.config import override_settings
-
-if TYPE_CHECKING:
-    from collections.abc import Set
 
 
 @pytest.mark.parametrize(

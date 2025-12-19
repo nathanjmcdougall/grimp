@@ -5,21 +5,17 @@ Use cases handle application logic.
 from __future__ import annotations
 
 import itertools
-from typing import TYPE_CHECKING, cast
+from collections.abc import Iterable, Sequence
+from typing import cast
 
+from ..application.graph import ImportGraph
 from ..application.ports import caching
-from ..domain.valueobjects import Module
+from ..application.ports.filesystem import AbstractFileSystem, BasicFileSystem
+from ..application.ports.modulefinder import AbstractModuleFinder, FoundPackage, ModuleFile
+from ..application.ports.packagefinder import AbstractPackageFinder
+from ..domain.valueobjects import DirectImport, Module
 from .config import settings
 from .scanning import scan_imports
-
-if TYPE_CHECKING:
-    from collections.abc import Iterable, Sequence
-
-    from ..application.graph import ImportGraph
-    from ..application.ports.filesystem import AbstractFileSystem, BasicFileSystem
-    from ..application.ports.modulefinder import AbstractModuleFinder, FoundPackage, ModuleFile
-    from ..application.ports.packagefinder import AbstractPackageFinder
-    from ..domain.valueobjects import DirectImport
 
 
 class NotSupplied:

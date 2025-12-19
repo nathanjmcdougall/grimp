@@ -28,6 +28,9 @@ lint.ignore = [
   "S101",    # [assert]                                 Controversial.       `assert` statements are sometimes appropriate for type-checking purposes.
   "SIM108",  # [if-else-block-instead-of-if-exp]        Controversial.      Ternary/Binary in-line expressions often hurt readability.
   "SIM118",  # [in-dict-keys]                           Controversial.      `if key in dict.keys()` sometimes has clearer intent than `if key in dict`.
+  "TC001",   # [typing-only-first-party-import]         Controversial.      This package has no/few dependencies so TYPE_CHECKING guards offer no material benefit and hurt readability.
+  "TC002",   # [typing-only-third-party-import]         Controversial.      This package has no/few dependencies so TYPE_CHECKING guards offer no material benefit and hurt readability.
+  "TC003",   # [typing-only-standard-library-import]    Controversial.      This package has no/few dependencies so TYPE_CHECKING guards offer no material benefit and hurt readability.
   "TD",      # [missing-space-after-todo-colon]         Controversial.      Different projects use different conventions for FIXME/TODO comments.  
   "TID252",  # [relative-imports]                       Controversial.      There are pros and cons to both relative and absolute imports in a packaging context.   
 ]
