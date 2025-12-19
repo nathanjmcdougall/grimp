@@ -83,7 +83,7 @@ class TestSingleOrNoContainer:
         self, specify_container: bool, start: str, end: str, route_middle: list[str]
     ):
         graph = self._build_legal_graph()
-        import_pairs = _pairwise([start, *route_middle, end])
+        import_pairs = itertools.pairwise([start, *route_middle, end])
         for importer, imported in import_pairs:
             graph.add_import(importer=importer, imported=imported)
 
@@ -479,7 +479,7 @@ class TestIndependentLayers:
         self, specify_container: bool, start: str, end: str, route_middle: list[str]
     ):
         graph = self._build_legal_graph()
-        import_pairs = _pairwise([start, *route_middle, end])
+        import_pairs = itertools.pairwise([start, *route_middle, end])
         for importer, imported in import_pairs:
             graph.add_import(importer=importer, imported=imported)
 
@@ -668,7 +668,7 @@ class TestMultiplePackages:
         self, start: str, end: str, route_middle: list[str]
     ):
         graph = self._build_legal_graph()
-        import_pairs = _pairwise([start, *route_middle, end])
+        import_pairs = itertools.pairwise([start, *route_middle, end])
         for importer, imported in import_pairs:
             graph.add_import(importer=importer, imported=imported)
 
@@ -947,18 +947,6 @@ class TestMissingLayers:
                 routes={Route.single_chained("two.medium.blue", "two.high.green")},
             )
         }
-
-
-def _pairwise(iterable):
-    """
-    Return successive overlapping pairs taken from the input iterable.
-    pairwise('ABCDEFG') --> AB BC CD DE EF FG
-
-    TODO: Replace with itertools.pairwise once on Python 3.10.
-    """
-    a, b = itertools.tee(iterable)
-    next(b, None)
-    return zip(a, b)
 
 
 class TestClosedLayers:

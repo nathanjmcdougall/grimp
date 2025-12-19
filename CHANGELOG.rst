@@ -5,6 +5,7 @@ Changelog
 latest
 ------
 
+* Deprecate the `NamespacePackageEncountered` exception.
 * Improve contribution experience for Windows developers using Just.
 * Tweak Just commands for running version-specific Python tests.
 * Remove `typing-extensions` as a dependency.

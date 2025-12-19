@@ -10,3 +10,4 @@ Authors
 * Shane Smiskol - https://github.com/sshane
 * Andreas Rammhold - https://github.com/andir
 * Nicholas Bunn - https://github.com/NicholasBunn
+* Nathan McDougall - https://github.com/nathanjmcdougall
