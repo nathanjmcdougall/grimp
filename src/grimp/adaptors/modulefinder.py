@@ -174,8 +174,8 @@ class ModuleFinder(modulefinder.AbstractModuleFinder):
         Args:
             package_name: the importable name of the top level package. Could
                 be namespaced.
-            namespace_dir: - the full name of the namespace directory.
-            package_directory: - the full path of the top level Python package directory.
+            namespace_dir: the full name of the namespace directory.
+            package_directory: the full path of the top level Python package directory.
 
         Returns:
             Absolute module name for importing (string).
