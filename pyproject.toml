@@ -77,18 +77,3 @@ grimp = ["py.typed"]
 [tool.setuptools.packages.find]
 where = ["src"]
 namespaces = false
-
-[tool.ruff]
-line-length = 99
-exclude = [
-    'tests/assets', # These are sample packages for tests to run under - we don't want ruff to mess with them.
-    'docs/', # Documentation configuration scripts
-]
-lint.select = [ "ALL" ]
-lint.ignore = [ "A005", "ANN401" ,"ARG002", "C408", "COM812", "D1", "D2", "E501", "FBT", "FIX", "G004", "N818", "PERF203", "PLR2004", "PLR0913", "PLW1641", "PTH", "PT006", "PT007", "RET504", "SIM108", "SIM118", "SIM300", "TD", "TID252" ]
-lint.per-file-ignores."tests/**/*.py" = [ "ANN", "ARG", "B007", "B018", "B033", "D", "EM", "FBT", "N806", "RET505", "RUF012", "RUF059", "S", "TRY" ]
-lint.pydocstyle.convention = "google"
-lint.future-annotations = true
-lint.flake8-builtins.strict-checking = true
-lint.flake8-type-checking.quote-annotations = true
-lint.typing-extensions = false

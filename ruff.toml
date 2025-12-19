@@ -1,0 +1,53 @@
+line-length = 99
+exclude = [
+  'tests/assets', # These are sample packages for tests to run under - we don't want ruff to mess with them.
+  'docs/',        # Documentation configuration scripts
+]
+lint.select = [ "ALL" ]
+lint.ignore = [
+  "A005",    # [stdlib-module-shadowing]                Backward Compat.    Violated by `modulefinder.py`.
+  "ANN401",  # [any-type]                               Controversial.      We use `Any` type annotations in several places intentionally.
+  "ARG002",  # [unused-method-argument]                 Backward Compat.
+  "C408",    # [unnecessary-collection-call]            Controversial.      A micro-optimization like `dict(a=1)` -> `{"a": 1}` that hurts readability.
+  "COM812",  # [missing-trailing-comma]                 TODO enable.        Has a large diff to fix all occurrences.
+  "D1",      # [pydocstyle : Undocumented]              TODO enable.        Not a priority to have every public interface documented yet.
+  "D2",      # [pydocstyle : Whitespace issues]         TODO enable.        Has a large diff to fix all occurrences.
+  "E501",    # [line-too-long]                          Controversial.      Long comments and docstrings are sometimes clearer. The formatter already addresses most violations.
+  "FBT",     # [flake8-boolean-trap]                    Backward Compat.
+  "FIX",     # [flake8-fixme]                           Controversial.      Different projects use different conventions for FIXME/TODO comments.
+  "G004",    # [logging-f-string]                       Controversial.      A micro-optimization but hurts readability.
+  "N818",    # [error-suffix-on-exception-name]         Backward Compat.
+  "PERF203", # [try-except-in-loop]                     Controversial.      A micro-optimization but increases code complexity.
+  "PLR0913", # [too-many-arguments]                     Backward Compat.
+  "PLW1641", # [eq-without-hash]                        TODO enable.        This is low-priority, and basically an enhancement to make classes more ergonomic.
+  "PTH",     # [flake8-use-pathlib]                     Controversial.      `pathlib` adoption is subtle and might be too disruptive for this codebase. e.g. https://github.com/python-grimp/grimp/pull/289#discussion_r2636012008
+  "PT007",   # [pytest-parametrize-values-wrong-type]   TODO enable.        Inconsistent use of `@pytest.mark.parametrize("value", ("a", "b", "c"))` versus `...["a", "b", "c"])` in parameterizations.
+  "RET504",  # [unnecessary-assign]                     Controversial.      A micro-optimization but hurts readability.
+  "RET505",  # [superfluous-else-return]                Controversial.      Explicit `else` blocks can improve readability.
+  "SIM108",  # [if-else-block-instead-of-if-exp]        Controversial.      Ternary/Binary in-line expressions often hurt readability.
+  "SIM118",  # [in-dict-keys]                           Controversial.      `if key in dict.keys()` sometimes has clearer intent than `if key in dict`.
+  "TD",      # [missing-space-after-todo-colon]         Controversial.      Different projects use different conventions for FIXME/TODO comments.  
+  "TID252",  # [relative-imports]                       Controversial.      There are pros and cons to both relative and absolute imports in a packaging context.   
+]
+lint.per-file-ignores."tests/**/*.py" = [
+  "ANN",     # [flake8-annotations]                 Type annotations not needed in a test suite
+  "ARG",     # [flake8-unused-arguments]            Interface design doesn't need attention in a test suite
+  "B007",    # [unused-loop-control-variable]       Unused variables are common in tests    
+  "B018",    # [useless-expression]                 Unused variables are common in tests 
+  "B033",    # [duplicate-value]                    Can be deliberate in a test suite
+  "D",       # [pydocstyle]                         Docstrings not needed in a test suite
+  "EM",      # [flake8-errmsg]                      Error message style doesn't need attention in a test suite
+  "N806",    # [non-lowercase-variable-in-function] Variable naming conventions don't need attention in a test suite
+  "PLR2004", # [magic-value-comparison]             Magic values are common in tests
+  "RUF012",  # [mutable-class-default]              Type annotations not needed in a test suite    
+  "RUF059",  # [unused-unpacked-variable]           Unused variables are common in tests
+  "S",       # [flake8-bandit]                      Security patterns don't need attention in a test suite
+  "SIM300",  # [yoda-conditions]                    TODO enable.   
+  "TRY",     # [tryceratops]                        Exception handling patterns don't need attention in a test suite
+]
+lint.pydocstyle.convention = "google"
+lint.future-annotations = true
+lint.flake8-builtins.strict-checking = true
+lint.flake8-pytest-style.parametrize-names-type = "csv"
+lint.flake8-type-checking.quote-annotations = true
+lint.typing-extensions = false

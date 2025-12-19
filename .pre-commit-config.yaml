@@ -9,7 +9,7 @@ repos:
         language: system
         require_serial: true
         pass_filenames: false
-        files: "^pyproject\\.toml|^src/.*|^tests/.*|^docs/conf.py$"
+        files: "^pyproject\\.toml|ruff\\.toml|^src/.*|^tests/.*|^docs/conf.py$"
 
       - id: format-rust
         name: Format Rust
@@ -24,7 +24,7 @@ repos:
         entry: just lint-python
         language: system
         pass_filenames: false
-        files: "^pyproject\\.toml|^src/.*|^tests/.*|^docs/conf.py$"
+        files: "^pyproject\\.toml|ruff\\.toml|^src/.*|^tests/.*|^docs/conf.py$"
 
       - id: lint-rust
         name: Lint Rust
