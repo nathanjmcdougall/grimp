@@ -1,12 +1,18 @@
+from __future__ import annotations
+
 import importlib.util
 import logging
 import sys
-from importlib.machinery import ModuleSpec
+from typing import TYPE_CHECKING
 
 from grimp import exceptions
-from grimp.application.ports.filesystem import AbstractFileSystem
 from grimp.application.ports.packagefinder import AbstractPackageFinder
 from grimp.domain.valueobjects import Module
+
+if TYPE_CHECKING:
+    from importlib.machinery import ModuleSpec
+
+    from grimp.application.ports.filesystem import AbstractFileSystem
 
 logger = logging.getLogger(__name__)
 
@@ -19,7 +25,8 @@ class ImportLibPackageFinder(AbstractPackageFinder):
         spec = importlib.util.find_spec(package_name)
         if not spec:
             logger.debug(f"sys.path: {sys.path}")
-            raise ValueError(f"Could not find package '{package_name}' in your Python path.")
+            msg = f"Could not find package '{package_name}' in your Python path."
+            raise ValueError(msg)
 
         if (
             spec.has_location
@@ -30,11 +37,14 @@ class ImportLibPackageFinder(AbstractPackageFinder):
         ):
             raise exceptions.NotATopLevelModule
 
-        assert spec.submodule_search_locations  # This should be the case if spec.has_location.
+        if not spec.submodule_search_locations:
+            # This should never be the case the case if spec.has_location.
+            raise AssertionError
         return set(spec.submodule_search_locations)
 
     def _is_a_package(self, spec: ModuleSpec, file_system: AbstractFileSystem) -> bool:
-        assert spec.origin
+        if not spec.origin:
+            raise AssertionError
         filename = file_system.split(spec.origin)[1]
         return filename == "__init__.py"
 
@@ -46,5 +56,6 @@ class ImportLibPackageFinder(AbstractPackageFinder):
             return False
 
         root_spec = importlib.util.find_spec(module.parent.name)
-        assert root_spec
+        if not root_spec:
+            raise AssertionError
         return root_spec.has_location

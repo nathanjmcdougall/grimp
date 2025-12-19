@@ -1,7 +1,12 @@
-from grimp.application.ports.modulefinder import FoundPackage, ModuleFile
-from grimp.domain.valueobjects import DirectImport, Module
+from __future__ import annotations
 
-from .filesystem import BasicFileSystem
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from grimp.application.ports.modulefinder import FoundPackage, ModuleFile
+    from grimp.domain.valueobjects import DirectImport, Module
+
+    from .filesystem import BasicFileSystem
 
 
 class CacheMiss(Exception):
@@ -35,7 +40,7 @@ class Cache:
         include_external_packages: bool,
         exclude_type_checking_imports: bool = False,
         cache_dir: str | None = None,
-    ) -> "Cache":
+    ) -> Cache:
         cache = cls(
             file_system=file_system,
             found_packages=found_packages,

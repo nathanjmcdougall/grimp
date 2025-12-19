@@ -1,9 +1,16 @@
+from __future__ import annotations
+
 import logging
-from collections.abc import Iterable, Set
+from typing import TYPE_CHECKING
 
 from grimp.application.ports import modulefinder
-from grimp.application.ports.filesystem import AbstractFileSystem
 from grimp.domain.valueobjects import Module
+
+if TYPE_CHECKING:
+    from collections.abc import Iterable
+    from collections.abc import Set as AbstractSet
+
+    from grimp.application.ports.filesystem import AbstractFileSystem
 
 logger = logging.getLogger(__name__)
 
@@ -44,7 +51,7 @@ class ModuleFinder(modulefinder.AbstractModuleFinder):
 
     def _get_python_files_and_namespace_dirs_inside_package(
         self, directory: str
-    ) -> tuple[Iterable[str], Set[str]]:
+    ) -> tuple[Iterable[str], AbstractSet[str]]:
         """
         Search the supplied package directory for Python files and namespaces.
 
@@ -79,14 +86,16 @@ class ModuleFinder(modulefinder.AbstractModuleFinder):
             for d in dirs_to_remove:
                 dirs.remove(d)
 
-            for filename in files:
-                if self._is_python_file(filename, dirpath):
-                    python_files.append(self.file_system.join(dirpath, filename))
+            python_files.extend(
+                self.file_system.join(dirpath, filename)
+                for filename in files
+                if self._is_python_file(filename, dirpath)
+            )
 
         namespace_dirs = self._determine_namespace_dirs(candidate_namespace_dirs, python_files)
         return python_files, namespace_dirs
 
-    def _is_in_portion(self, directory: str, portions: Set[str]) -> bool:
+    def _is_in_portion(self, directory: str, portions: AbstractSet[str]) -> bool:
         return any(directory.startswith(portion) for portion in portions)
 
     def _should_ignore_dir(self, directory: str) -> bool:
@@ -112,9 +121,11 @@ class ModuleFinder(modulefinder.AbstractModuleFinder):
         Files with extra dots in the name won't be treated as Python files.
 
         Args:
-            filename (str): the filename, excluding the path.
+            filename: the filename, excluding the path.
+            dirpath: the directory path containing the file.
+
         Returns:
-            bool: whether it's a Python file.
+            Whether it's a Python file.
         """
         # Ignore hidden files.
         if filename.startswith("."):
@@ -138,12 +149,13 @@ class ModuleFinder(modulefinder.AbstractModuleFinder):
     ) -> str:
         """
         Args:
-            package_name (string) - the importable name of the top level package. Could
+            package_name: the importable name of the top level package. Could
                 be namespaced.
-            filename_and_path (string) - the full name of the Python file.
-            package_directory (string) - the full path of the top level Python package directory.
-         Returns:
-            Absolute module name for importing (string).
+            filename_and_path: the full name of the Python file.
+            package_directory: the full path of the top level Python package directory.
+
+        Returns:
+            Absolute module name for importing.
         """
         internal_filename_and_path = filename_and_path[len(package_directory) :]
         internal_filename_and_path_without_extension = internal_filename_and_path[1:-3]
@@ -160,11 +172,12 @@ class ModuleFinder(modulefinder.AbstractModuleFinder):
     ) -> str:
         """
         Args:
-            package_name (string) - the importable name of the top level package. Could
+            package_name: the importable name of the top level package. Could
                 be namespaced.
-            namespace_dir (string) - the full name of the namespace directory.
-            package_directory (string) - the full path of the top level Python package directory.
-         Returns:
+            namespace_dir: - the full name of the namespace directory.
+            package_directory: - the full path of the top level Python package directory.
+
+        Returns:
             Absolute module name for importing (string).
         """
         parent_of_package_directory = package_directory[: -len(package_name)]

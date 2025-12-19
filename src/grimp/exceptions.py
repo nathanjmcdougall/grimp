@@ -1,3 +1,6 @@
+from __future__ import annotations
+
+
 class GrimpException(Exception):
     """
     Base exception for all custom Grimp exceptions to inherit.
@@ -47,19 +50,22 @@ class SourceSyntaxError(GrimpException):
         self.lineno = lineno
         self.text = text
 
-    def __str__(self):
+    def __str__(self) -> str:
         lineno = self.lineno or "?"
         text = self.text or "<unavailable>"
         return f"Syntax error in {self.filename}, line {lineno}: {text}"
 
-    def __eq__(self, other):
+    def __eq__(self, other: object) -> bool:
+        if not isinstance(other, SourceSyntaxError):
+            return NotImplemented
+
         return (self.filename, self.lineno, self.text) == (
             other.filename,
             other.lineno,
             other.text,
         )
 
-    def __reduce__(self):
+    def __reduce__(self) -> tuple[type[SourceSyntaxError], tuple[str, int | None, str | None]]:
         # Implement __reduce__ to make this exception pickleable,
         # allowing it to be sent between processes.
         return SourceSyntaxError, (self.filename, self.lineno, self.text)

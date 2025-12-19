@@ -1,10 +1,16 @@
-from collections.abc import Collection
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
 
 from grimp import _rustgrimp as rust  # type: ignore[attr-defined]
-from grimp.domain.valueobjects import DirectImport, Module
 from grimp.application.config import settings
-from grimp.application.ports.filesystem import AbstractFileSystem
-from grimp.application.ports.modulefinder import ModuleFile, FoundPackage
+
+if TYPE_CHECKING:
+    from collections.abc import Collection
+
+    from grimp.application.ports.filesystem import AbstractFileSystem
+    from grimp.application.ports.modulefinder import FoundPackage, ModuleFile
+    from grimp.domain.valueobjects import DirectImport, Module
 
 
 def scan_imports(

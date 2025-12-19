@@ -1,10 +1,16 @@
-from typing import Any
-from collections.abc import Generator
+from __future__ import annotations
+
+from typing import TYPE_CHECKING, Any
 
 import yaml
 
-from grimp.application.ports.filesystem import AbstractFileSystem, BasicFileSystem
 from grimp import _rustgrimp as rust  # type: ignore[attr-defined]
+from grimp.application.ports.filesystem import AbstractFileSystem
+
+if TYPE_CHECKING:
+    from collections.abc import Generator
+
+    from grimp.application.ports.filesystem import BasicFileSystem
 
 DEFAULT_MTIME = 10000.0
 

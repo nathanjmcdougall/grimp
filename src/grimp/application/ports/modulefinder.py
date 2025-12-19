@@ -1,10 +1,15 @@
+from __future__ import annotations
+
 import abc
-from collections.abc import Set
 from dataclasses import dataclass
+from typing import TYPE_CHECKING
 
-from grimp.domain.valueobjects import Module
+if TYPE_CHECKING:
+    from collections.abc import Set as AbstractSet
 
-from .filesystem import AbstractFileSystem
+    from grimp.domain.valueobjects import Module
+
+    from .filesystem import AbstractFileSystem
 
 
 @dataclass(frozen=True, order=True)
@@ -21,8 +26,8 @@ class FoundPackage:
 
     name: str
     directory: str
-    module_files: Set[ModuleFile]
-    namespace_packages: Set[str] = frozenset()
+    module_files: AbstractSet[ModuleFile]
+    namespace_packages: AbstractSet[str] = frozenset()
 
 
 class AbstractModuleFinder(abc.ABC):

@@ -1,7 +1,10 @@
 from __future__ import annotations
 
 import abc
-from types import TracebackType
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from types import TracebackType
 
 
 class Timer(abc.ABC):

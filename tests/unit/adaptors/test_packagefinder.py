@@ -1,10 +1,10 @@
 from pathlib import Path
 
-import pytest  # type: ignore
+import pytest
 
 from grimp import exceptions
-from grimp.adaptors.packagefinder import ImportLibPackageFinder
 from grimp.adaptors.filesystem import FileSystem
+from grimp.adaptors.packagefinder import ImportLibPackageFinder
 from tests.adaptors.filesystem import FakeFileSystem
 
 assets = (Path(__file__).parent.parent.parent / "assets").resolve()

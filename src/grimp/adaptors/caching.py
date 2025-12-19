@@ -1,15 +1,19 @@
-import hashlib
+from __future__ import annotations
 
+import hashlib
 import json
 import logging
+from typing import TYPE_CHECKING, Any
 
-from grimp.application.ports.filesystem import BasicFileSystem
-from grimp.application.ports.modulefinder import FoundPackage, ModuleFile
-from grimp.domain.valueobjects import DirectImport, Module
+from grimp import _rustgrimp as rust  # type: ignore[attr-defined]
 
 from ..application.ports.caching import Cache as AbstractCache
 from ..application.ports.caching import CacheMiss
-from grimp import _rustgrimp as rust  # type: ignore[attr-defined]
+
+if TYPE_CHECKING:
+    from grimp.application.ports.filesystem import BasicFileSystem
+    from grimp.application.ports.modulefinder import FoundPackage, ModuleFile
+    from grimp.domain.valueobjects import DirectImport, Module
 
 logger = logging.getLogger(__name__)
 PrimitiveFormat = dict[str, list[tuple[str, int | None, str]]]
@@ -64,7 +68,7 @@ class CacheFileNamer:
 class Cache(AbstractCache):
     DEFAULT_CACHE_DIR = ".grimp_cache"
 
-    def __init__(self, *args, namer: type[CacheFileNamer], **kwargs) -> None:
+    def __init__(self, *args: Any, namer: type[CacheFileNamer], **kwargs: Any) -> None:
         """
         Don't instantiate Cache directly; use Cache.setup().
         """
@@ -82,7 +86,7 @@ class Cache(AbstractCache):
         exclude_type_checking_imports: bool = False,
         cache_dir: str | None = None,
         namer: type[CacheFileNamer] = CacheFileNamer,
-    ) -> "Cache":
+    ) -> Cache:
         cache = cls(
             file_system=file_system,
             found_packages=found_packages,
@@ -93,7 +97,8 @@ class Cache(AbstractCache):
         )
         cache._build_mtime_map()
         cache._build_data_map()
-        assert cache.cache_dir
+        if not cache.cache_dir:
+            raise AssertionError
         return cache
 
     @classmethod
@@ -104,7 +109,7 @@ class Cache(AbstractCache):
         try:
             cached_mtime = self._mtime_map[module_file.module.name]
         except KeyError:
-            raise CacheMiss
+            raise CacheMiss from None
         if cached_mtime != module_file.mtime:
             raise CacheMiss
 
@@ -113,7 +118,7 @@ class Cache(AbstractCache):
         except KeyError:
             # While we would expect the module to be in here,
             # there's no point in crashing if, for some reason, it's not.
-            raise CacheMiss
+            raise CacheMiss from None
 
     def write(
         self,
@@ -170,11 +175,12 @@ class Cache(AbstractCache):
             return {}
         try:
             deserialized = json.loads(serialized)
-            logger.info(f"Used cache meta file {meta_cache_filename}.")
-            return deserialized
         except json.JSONDecodeError:
             logger.warning(f"Could not use corrupt cache file {meta_cache_filename}.")
             return {}
+
+        logger.info(f"Used cache meta file {meta_cache_filename}.")
+        return deserialized
 
     def _build_data_map(self) -> None:
         self._data_map = self._read_data_map_file()

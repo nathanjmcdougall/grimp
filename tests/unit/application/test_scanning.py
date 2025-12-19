@@ -1,11 +1,17 @@
-import pytest  # type: ignore
+from __future__ import annotations
 
-from grimp.application.ports.modulefinder import FoundPackage, ModuleFile
+from typing import TYPE_CHECKING
+
+import pytest
+
+from grimp import _rustgrimp as rust  # type: ignore[attr-defined]
 from grimp.application import scanning
+from grimp.application.ports.modulefinder import FoundPackage, ModuleFile
 from grimp.domain.valueobjects import DirectImport, Module
 from tests.config import override_settings
-from grimp import _rustgrimp as rust  # type: ignore[attr-defined]
-from collections.abc import Set
+
+if TYPE_CHECKING:
+    from collections.abc import Set as AbstractSet
 
 
 @pytest.mark.parametrize(
@@ -973,5 +979,5 @@ def _module_to_module_file(module: Module) -> ModuleFile:
     return ModuleFile(module=module, mtime=some_mtime)
 
 
-def _modules_to_module_files(modules: Set[Module]) -> frozenset[ModuleFile]:
+def _modules_to_module_files(modules: AbstractSet[Module]) -> frozenset[ModuleFile]:
     return frozenset({_module_to_module_file(module) for module in modules})

@@ -1,6 +1,10 @@
-import abc
+from __future__ import annotations
 
-from .filesystem import AbstractFileSystem
+import abc
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from .filesystem import AbstractFileSystem
 
 
 class AbstractPackageFinder(abc.ABC):

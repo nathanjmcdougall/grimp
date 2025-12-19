@@ -1,7 +1,8 @@
-import pytest  # type: ignore
+import re
+
+import pytest
 
 from grimp.application.graph import ImportGraph
-import re
 from grimp.exceptions import InvalidImportExpression
 
 

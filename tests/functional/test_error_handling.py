@@ -1,6 +1,6 @@
 import os
 
-import pytest  # type: ignore
+import pytest
 
 from grimp import build_graph, exceptions
 

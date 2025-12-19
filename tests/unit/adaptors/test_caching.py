@@ -1,13 +1,13 @@
 import json
 import logging
 
-import pytest  # type: ignore
+import pytest
 
+from grimp import _rustgrimp as rust  # type: ignore[attr-defined]
 from grimp.adaptors.caching import Cache, CacheFileNamer
 from grimp.application.ports.caching import CacheMiss
 from grimp.application.ports.modulefinder import FoundPackage, ModuleFile
 from grimp.domain.valueobjects import DirectImport, Module
-from grimp import _rustgrimp as rust  # type: ignore[attr-defined]
 
 
 class SimplisticFileNamer(CacheFileNamer):

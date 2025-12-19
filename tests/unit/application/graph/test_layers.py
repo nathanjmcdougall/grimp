@@ -3,14 +3,17 @@ from __future__ import annotations
 import itertools
 import logging
 import re
-from collections.abc import Iterable
+from typing import TYPE_CHECKING
 
-import pytest  # type: ignore
+import pytest
 
 from grimp import PackageDependency, Route
 from grimp.application.graph import ImportGraph
-from grimp.exceptions import NoSuchContainer
 from grimp.domain.valueobjects import Layer
+from grimp.exceptions import NoSuchContainer
+
+if TYPE_CHECKING:
+    from collections.abc import Iterable
 
 
 class TestSingleOrNoContainer:
@@ -958,7 +961,7 @@ def _pairwise(iterable):
     """
     a, b = itertools.tee(iterable)
     next(b, None)
-    return zip(a, b)
+    return zip(a, b, strict=False)
 
 
 class TestClosedLayers:

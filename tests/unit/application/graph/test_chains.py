@@ -1,5 +1,6 @@
 import re
-import pytest  # type: ignore
+
+import pytest
 
 from grimp.application.graph import ImportGraph
 

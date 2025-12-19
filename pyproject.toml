@@ -84,6 +84,11 @@ exclude = [
     'tests/assets', # These are sample packages for tests to run under - we don't want ruff to mess with them.
     'docs/', # Documentation configuration scripts
 ]
-lint.select = ["A", "C4", "E4", "E7", "E9", "F", "FLY", "FURB", "INP", "PLE", "PLR", "PT", "RUF", "SIM", "UP"]
-lint.ignore = ["C408", "PLR2004", "PLR0913", "PT006", "PT007", "SIM108", "SIM118", "SIM300"]
-lint.per-file-ignores."tests/**/*.py" = [ "RUF012", "RUF059" ]
+lint.select = [ "ALL" ]
+lint.ignore = [ "A005", "ANN401" ,"ARG002", "C408", "COM812", "D1", "D2", "E501", "FBT", "FIX", "G004", "N818", "PERF203", "PLR2004", "PLR0913", "PLW1641", "PTH", "PT006", "PT007", "RET504", "SIM108", "SIM118", "SIM300", "TD", "TID252" ]
+lint.per-file-ignores."tests/**/*.py" = [ "ANN", "ARG", "B007", "B018", "B033", "D", "EM", "FBT", "N806", "RET505", "RUF012", "RUF059", "S", "TRY" ]
+lint.pydocstyle.convention = "google"
+lint.future-annotations = true
+lint.flake8-builtins.strict-checking = true
+lint.flake8-type-checking.quote-annotations = true
+lint.typing-extensions = false
