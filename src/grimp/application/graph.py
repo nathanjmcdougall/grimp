@@ -82,8 +82,8 @@ class ImportGraph:
         """
         try:
             return self._rustgraph.find_matching_modules(expression)
-        except rust.InvalidModuleExpression as e:
-            raise InvalidModuleExpression(str(e)) from e
+        except rust.InvalidModuleExpression as exc:
+            raise InvalidModuleExpression(str(exc)) from exc
 
     def add_module(self, module: str, is_squashed: bool = False) -> None:
         """
@@ -284,17 +284,17 @@ class ImportGraph:
         """
         try:
             importer_expression, imported_expression = import_expression.split(" -> ")
-        except ValueError:
+        except ValueError as exc:
             msg = f"{import_expression} is not a valid import expression."
-            raise InvalidImportExpression(msg) from None
+            raise InvalidImportExpression(msg) from exc
 
         try:
             return self._rustgraph.find_matching_direct_imports(
                 importer_expression=importer_expression, imported_expression=imported_expression
             )
-        except rust.InvalidModuleExpression as e:
+        except rust.InvalidModuleExpression as exc:
             msg = f"{import_expression} is not a valid import expression."
-            raise InvalidImportExpression(msg) from e
+            raise InvalidImportExpression(msg) from exc
 
     # Indirect imports
     # ----------------

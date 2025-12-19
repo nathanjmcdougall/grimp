@@ -107,17 +107,17 @@ class Cache(AbstractCache):
     def read_imports(self, module_file: ModuleFile) -> set[DirectImport]:
         try:
             cached_mtime = self._mtime_map[module_file.module.name]
-        except KeyError:
-            raise CacheMiss from None
+        except KeyError as exc:
+            raise CacheMiss from exc
         if cached_mtime != module_file.mtime:
             raise CacheMiss
 
         try:
             return self._data_map[module_file.module]
-        except KeyError:
+        except KeyError as exc:
             # While we would expect the module to be in here,
             # there's no point in crashing if, for some reason, it's not.
-            raise CacheMiss from None
+            raise CacheMiss from exc
 
     def write(
         self,
