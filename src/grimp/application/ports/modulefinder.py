@@ -5,7 +5,7 @@ from dataclasses import dataclass
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from collections.abc import Set as AbstractSet
+    from collections.abc import Set
 
     from grimp.domain.valueobjects import Module
 
@@ -26,8 +26,8 @@ class FoundPackage:
 
     name: str
     directory: str
-    module_files: AbstractSet[ModuleFile]
-    namespace_packages: AbstractSet[str] = frozenset()
+    module_files: Set[ModuleFile]
+    namespace_packages: Set[str] = frozenset()
 
 
 class AbstractModuleFinder(abc.ABC):

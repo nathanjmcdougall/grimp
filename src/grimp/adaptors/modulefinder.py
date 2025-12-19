@@ -7,8 +7,7 @@ from grimp.application.ports import modulefinder
 from grimp.domain.valueobjects import Module
 
 if TYPE_CHECKING:
-    from collections.abc import Iterable
-    from collections.abc import Set as AbstractSet
+    from collections.abc import Iterable, Set
 
     from grimp.application.ports.filesystem import AbstractFileSystem
 
@@ -51,7 +50,7 @@ class ModuleFinder(modulefinder.AbstractModuleFinder):
 
     def _get_python_files_and_namespace_dirs_inside_package(
         self, directory: str
-    ) -> tuple[Iterable[str], AbstractSet[str]]:
+    ) -> tuple[Iterable[str], Set[str]]:
         """
         Search the supplied package directory for Python files and namespaces.
 
@@ -95,7 +94,7 @@ class ModuleFinder(modulefinder.AbstractModuleFinder):
         namespace_dirs = self._determine_namespace_dirs(candidate_namespace_dirs, python_files)
         return python_files, namespace_dirs
 
-    def _is_in_portion(self, directory: str, portions: AbstractSet[str]) -> bool:
+    def _is_in_portion(self, directory: str, portions: Set[str]) -> bool:
         return any(directory.startswith(portion) for portion in portions)
 
     def _should_ignore_dir(self, directory: str) -> bool:

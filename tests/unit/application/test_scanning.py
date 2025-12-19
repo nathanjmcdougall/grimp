@@ -11,7 +11,7 @@ from grimp.domain.valueobjects import DirectImport, Module
 from tests.config import override_settings
 
 if TYPE_CHECKING:
-    from collections.abc import Set as AbstractSet
+    from collections.abc import Set
 
 
 @pytest.mark.parametrize(
@@ -979,5 +979,5 @@ def _module_to_module_file(module: Module) -> ModuleFile:
     return ModuleFile(module=module, mtime=some_mtime)
 
 
-def _modules_to_module_files(modules: AbstractSet[Module]) -> frozenset[ModuleFile]:
+def _modules_to_module_files(modules: Set[Module]) -> frozenset[ModuleFile]:
     return frozenset({_module_to_module_file(module) for module in modules})

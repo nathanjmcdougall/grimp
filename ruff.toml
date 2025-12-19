@@ -22,6 +22,7 @@ lint.ignore = [
   "PLW1641", # [eq-without-hash]                        TODO enable.        This is low-priority, and basically an enhancement to make classes more ergonomic.
   "PTH",     # [flake8-use-pathlib]                     Controversial.      `pathlib` adoption is subtle and might be too disruptive for this codebase. e.g. https://github.com/python-grimp/grimp/pull/289#discussion_r2636012008
   "PT007",   # [pytest-parametrize-values-wrong-type]   TODO enable.        Inconsistent use of `@pytest.mark.parametrize("value", ("a", "b", "c"))` versus `...["a", "b", "c"])` in parameterizations.
+  "PYI025",  # [unaliased-collections-abc-set-import]   Controversial.      `collections.abc.Set` is not necessarily confused with the built-in `set`.
   "RET504",  # [unnecessary-assign]                     Controversial.      A micro-optimization but hurts readability.
   "RET505",  # [superfluous-else-return]                Controversial.      Explicit `else` blocks can improve readability.
   "S101",    # [assert]                                 Controversial.       `assert` statements are sometimes appropriate for type-checking purposes.
