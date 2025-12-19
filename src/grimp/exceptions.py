@@ -1,5 +1,21 @@
 from __future__ import annotations
 
+import warnings
+from typing import Any
+
+
+def __getattr__(name: str) -> Any:
+    if name == "NamespacePackageEncountered":
+        warnings.warn(
+            f"{_NamespacePackageEncountered.__name__} is deprecated; graphs can now be built from "
+            f"namespace packages starting from Grimp 3.14. This exception will not be "
+            f"raised by Grimp anymore, and will be removed in Grimp 3.16.",
+            DeprecationWarning,
+            stacklevel=2,
+        )
+        return _NamespacePackageEncountered
+    raise AttributeError
+
 
 class GrimpException(Exception):
     """
@@ -19,13 +35,13 @@ class NoSuchContainer(GrimpException):
     """
 
 
-class NamespacePackageEncountered(GrimpException):
+class _NamespacePackageEncountered(GrimpException):
     """
-    Indicates that there was no __init__.py at the top level.
+    Deprecated.
+    """
 
-    This indicates a namespace package (see PEP 420), which is not currently supported. More
-    typically this is just an oversight which can be fixed by adding the __init__.py file.
-    """
+    # See `__getattr__` above.
+    # https://github.com/python-grimp/grimp/issues/272
 
 
 class NotATopLevelModule(GrimpException):

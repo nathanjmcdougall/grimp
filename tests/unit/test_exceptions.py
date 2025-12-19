@@ -1,3 +1,5 @@
+import pytest
+
 from grimp import exceptions
 
 
@@ -54,3 +56,9 @@ class TestSourceSyntaxError:
             lineno=3,
             text="something else wrong",
         )
+
+
+class TestNamespacePackageEncountered:
+    def test_deprecated_access(self):
+        with pytest.warns(DeprecationWarning, match="NamespacePackageEncountered is deprecated"):
+            exceptions.NamespacePackageEncountered
