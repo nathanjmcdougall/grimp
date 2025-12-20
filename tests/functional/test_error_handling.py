@@ -1,4 +1,4 @@
-import os
+from pathlib import Path
 
 import pytest
 
@@ -6,9 +6,10 @@ from grimp import build_graph, exceptions
 
 
 def test_syntax_error_includes_module():
-    dirname = os.path.dirname(__file__)
-    filename = os.path.abspath(
-        os.path.join(dirname, "..", "assets", "syntaxerrorpackage", "foo", "one.py")
+    filename = str(
+        (
+            Path(__file__).parent.parent / "assets" / "syntaxerrorpackage" / "foo" / "one.py"
+        ).resolve()
     )
 
     with pytest.raises(exceptions.SourceSyntaxError) as excinfo:
