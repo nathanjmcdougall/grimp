@@ -77,13 +77,3 @@ grimp = ["py.typed"]
 [tool.setuptools.packages.find]
 where = ["src"]
 namespaces = false
-
-[tool.ruff]
-line-length = 99
-exclude = [
-    'tests/assets', # These are sample packages for tests to run under - we don't want ruff to mess with them.
-    'docs/', # Documentation configuration scripts
-]
-lint.select = ["A", "C4", "E4", "E7", "E9", "F", "FLY", "FURB", "INP", "PLE", "PLR", "PT", "RUF", "SIM", "UP"]
-lint.ignore = ["C408", "PLR2004", "PLR0913", "PT006", "PT007", "SIM108", "SIM118", "SIM300"]
-lint.per-file-ignores."tests/**/*.py" = [ "RUF012", "RUF059" ]

@@ -1,5 +1,7 @@
-from grimp.application.ports.modulefinder import AbstractModuleFinder, FoundPackage, ModuleFile
+from __future__ import annotations
+
 from grimp.application.ports.filesystem import AbstractFileSystem
+from grimp.application.ports.modulefinder import AbstractModuleFinder, FoundPackage, ModuleFile
 
 
 class BaseFakeModuleFinder(AbstractModuleFinder):

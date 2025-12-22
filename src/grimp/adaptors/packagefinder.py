@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import importlib.util
 import logging
 import sys
@@ -19,7 +21,8 @@ class ImportLibPackageFinder(AbstractPackageFinder):
         spec = importlib.util.find_spec(package_name)
         if not spec:
             logger.debug(f"sys.path: {sys.path}")
-            raise ValueError(f"Could not find package '{package_name}' in your Python path.")
+            msg = f"Could not find package '{package_name}' in your Python path."
+            raise ValueError(msg)
 
         if (
             spec.has_location

@@ -1,9 +1,18 @@
+from __future__ import annotations
+
 import warnings
+from typing import Any
 
 
-def __getattr__(name: str):
+def __getattr__(name: str) -> Any:
     if name == "NamespacePackageEncountered":
-        _NamespacePackageEncountered._warn_deprecated()
+        warnings.warn(
+            f"{_NamespacePackageEncountered.__name__} is deprecated; graphs can now be built from "
+            f"namespace packages starting from Grimp 3.14. This exception will not be "
+            f"raised by Grimp anymore, and will be removed in Grimp 3.16.",
+            DeprecationWarning,
+            stacklevel=2,
+        )
         return _NamespacePackageEncountered
     raise AttributeError
 
@@ -31,16 +40,8 @@ class _NamespacePackageEncountered(GrimpException):
     Deprecated.
     """
 
+    # See `__getattr__` above.
     # https://github.com/python-grimp/grimp/issues/272
-    @staticmethod
-    def _warn_deprecated():
-        warnings.warn(
-            "NamespacePackageEncountered is deprecated; graphs can now be built from "
-            "namespace packages starting from Grimp 3.14. This exception will not be "
-            "raised by Grimp anymore, and will be removed in Grimp 3.16.",
-            DeprecationWarning,
-            stacklevel=2,
-        )
 
 
 class NotATopLevelModule(GrimpException):
@@ -65,19 +66,22 @@ class SourceSyntaxError(GrimpException):
         self.lineno = lineno
         self.text = text
 
-    def __str__(self):
+    def __str__(self) -> str:
         lineno = self.lineno or "?"
         text = self.text or "<unavailable>"
         return f"Syntax error in {self.filename}, line {lineno}: {text}"
 
-    def __eq__(self, other):
+    def __eq__(self, other: object) -> bool:
+        if not isinstance(other, SourceSyntaxError):
+            return NotImplemented
+
         return (self.filename, self.lineno, self.text) == (
             other.filename,
             other.lineno,
             other.text,
         )
 
-    def __reduce__(self):
+    def __reduce__(self) -> tuple[type[SourceSyntaxError], tuple[str, int | None, str | None]]:
         # Implement __reduce__ to make this exception pickleable,
         # allowing it to be sent between processes.
         return SourceSyntaxError, (self.filename, self.lineno, self.text)

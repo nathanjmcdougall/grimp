@@ -1,6 +1,6 @@
-from grimp import build_graph
 import pytest
 
+from grimp import build_graph
 
 """
 For ease of reference, these are the imports of all the files:

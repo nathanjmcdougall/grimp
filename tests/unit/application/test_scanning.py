@@ -1,11 +1,14 @@
-import pytest  # type: ignore
+from __future__ import annotations
 
-from grimp.application.ports.modulefinder import FoundPackage, ModuleFile
+from collections.abc import Set
+
+import pytest
+
+from grimp import _rustgrimp as rust  # type: ignore[attr-defined]
 from grimp.application import scanning
+from grimp.application.ports.modulefinder import FoundPackage, ModuleFile
 from grimp.domain.valueobjects import DirectImport, Module
 from tests.config import override_settings
-from grimp import _rustgrimp as rust  # type: ignore[attr-defined]
-from collections.abc import Set
 
 
 @pytest.mark.parametrize(

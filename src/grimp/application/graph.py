@@ -1,14 +1,16 @@
 from __future__ import annotations
-from typing import TypedDict
+
 from collections.abc import Sequence
+from typing import TypedDict
+
+from grimp import _rustgrimp as rust  # type: ignore[attr-defined]
 from grimp.domain.analysis import PackageDependency, Route
 from grimp.domain.valueobjects import Layer
-from grimp import _rustgrimp as rust  # type: ignore[attr-defined]
 from grimp.exceptions import (
+    InvalidImportExpression,
+    InvalidModuleExpression,
     ModuleNotPresent,
     NoSuchContainer,
-    InvalidModuleExpression,
-    InvalidImportExpression,
 )
 
 
@@ -53,24 +55,20 @@ class ImportGraph:
         """
         Find all modules matching the passed expression.
 
-        Args:
-            expression: A module expression used for matching.
-        Returns:
-            A set of module names matching the expression.
-        Raises:
-            InvalidModuleExpression if the passed expression is invalid.
-
-        Module Expressions
-        ==================
-
         A module expression is used to refer to sets of modules.
-
         - ``*`` stands in for a module name, without including subpackages.
         - ``**`` includes subpackages too.
 
-        Examples
-        --------
+        Args:
+            expression: A module expression used for matching.
 
+        Returns:
+            A set of module names matching the expression.
+
+        Raises:
+            InvalidModuleExpression if the passed expression is invalid.
+
+        Examples:
         - ``mypackage.foo``:  matches ``mypackage.foo`` exactly.
         - ``mypackage.*``:  matches ``mypackage.foo`` but not ``mypackage.foo.bar``.
         - ``mypackage.*.baz``: matches ``mypackage.foo.baz`` but not ``mypackage.foo.bar.baz``.
@@ -82,8 +80,8 @@ class ImportGraph:
         """
         try:
             return self._rustgraph.find_matching_modules(expression)
-        except rust.InvalidModuleExpression as e:
-            raise InvalidModuleExpression(str(e)) from e
+        except rust.InvalidModuleExpression as exc:
+            raise InvalidModuleExpression(str(exc)) from exc
 
     def add_module(self, module: str, is_squashed: bool = False) -> None:
         """
@@ -118,7 +116,8 @@ class ImportGraph:
         """
         self._cached_modules = None
         if not self._rustgraph.contains_module(module):
-            raise ModuleNotPresent(f'"{module}" not present in the graph.')
+            msg = f'"{module}" not present in the graph.'
+            raise ModuleNotPresent(msg)
         self._rustgraph.squash_module(module)
 
     def is_module_squashed(self, module: str) -> bool:
@@ -128,7 +127,8 @@ class ImportGraph:
         If the module is not present in the graph, grimp.exceptions.ModuleNotPresent will be raised.
         """
         if not self._rustgraph.contains_module(module):
-            raise ModuleNotPresent(f'"{module}" not present in the graph.')
+            msg = f'"{module}" not present in the graph.'
+            raise ModuleNotPresent(msg)
         return self._rustgraph.is_module_squashed(module)
 
     def add_import(
@@ -178,7 +178,8 @@ class ImportGraph:
         # It doesn't make sense to find the children of a squashed module, as we don't store
         # the children in the graph.
         if self.is_module_squashed(module):
-            raise ValueError("Cannot find children of a squashed module.")
+            msg = "Cannot find children of a squashed module."
+            raise ValueError(msg)
         return self._rustgraph.find_children(module)
 
     def find_descendants(self, module: str) -> set[str]:
@@ -192,7 +193,8 @@ class ImportGraph:
         # It doesn't make sense to find the descendants of a squashed module, as we don't store
         # the descendants in the graph.
         if self.is_module_squashed(module):
-            raise ValueError("Cannot find descendants of a squashed module.")
+            msg = "Cannot find descendants of a squashed module."
+            raise ValueError(msg)
         return self._rustgraph.find_descendants(module)
 
     # Direct imports
@@ -225,7 +227,9 @@ class ImportGraph:
 
     def get_import_details(self, *, importer: str, imported: str) -> list[DetailedImport]:
         """
-        Return available metadata relating to the direct imports between two modules, in the form:
+        Return available metadata relating to the direct imports between two modules.
+
+        This returns a list of dictionaries in the following form:
         [
             {
                 'importer': 'mypackage.importer',
@@ -265,10 +269,12 @@ class ImportGraph:
             import_expression: An expression used for matching importing modules, in the form
                 "importer_expression -> imported_expression", where both expressions are
                 module expressions.
+
         Returns:
             A list of direct imports matching the expressions, ordered alphabetically by importer,
             then imported.
             (We return a list rather than a set purely because dictionaries aren't hashable.)
+
         Raises:
             InvalidImportExpression if either of the passed expressions are invalid.
 
@@ -276,17 +282,17 @@ class ImportGraph:
         """
         try:
             importer_expression, imported_expression = import_expression.split(" -> ")
-        except ValueError:
-            raise InvalidImportExpression(f"{import_expression} is not a valid import expression.")
+        except ValueError as exc:
+            msg = f"{import_expression} is not a valid import expression."
+            raise InvalidImportExpression(msg) from exc
 
         try:
             return self._rustgraph.find_matching_direct_imports(
                 importer_expression=importer_expression, imported_expression=imported_expression
             )
-        except rust.InvalidModuleExpression as e:
-            raise InvalidImportExpression(
-                f"{import_expression} is not a valid import expression."
-            ) from e
+        except rust.InvalidModuleExpression as exc:
+            msg = f"{import_expression} is not a valid import expression."
+            raise InvalidImportExpression(msg) from exc
 
     # Indirect imports
     # ----------------
@@ -295,6 +301,7 @@ class ImportGraph:
         """
         Return a set of the names of all the modules that import (even indirectly) the
         supplied module name.
+
         Args:
             module:        The absolute name of the upstream Module.
             as_package: Whether or not to treat the supplied module as an individual module,
@@ -303,7 +310,6 @@ class ImportGraph:
                            modules *external* to the subpackage, and won't include modules within
                            the subpackage.
         Usage:
-
             # Returns the modules downstream of mypackage.foo.
             import_graph.find_downstream_modules('mypackage.foo')
 
@@ -346,7 +352,8 @@ class ImportGraph:
         """
         for module in (importer, imported):
             if not self._rustgraph.contains_module(module):
-                raise ValueError(f"Module {module} is not present in the graph.")
+                msg = f"Module {module} is not present in the graph."
+                raise ValueError(msg)
 
         chain = self._rustgraph.find_shortest_chain(importer, imported, as_packages)
         return tuple(chain) if chain else None
@@ -410,22 +417,23 @@ class ImportGraph:
         included in the import chain. For example, given the layers high -> mid (closed) -> low then
         all import chains from high -> low must go via mid.
 
-        Arguments:
+        Args:
+            layers: A sequence, each element of which consists either of a `Layer`, the name
+                    of a layer module or a set of sibling modules. If containers
+                    are also specified, then these names must be relative to the container.
+                    The order is from higher to lower level layers. Any layers that don't
+                    exist in the graph will be ignored.
+            containers: The parent modules of the layers, as absolute names that you could import,
+                        such as "mypackage.foo". (Optional.)
 
-        - layers:     A sequence, each element of which consists either of a `Layer`, the name
-                      of a layer module or a set of sibling modules. If containers
-                      are also specified, then these names must be relative to the container.
-                      The order is from higher to lower level layers. Any layers that don't
-                      exist in the graph will be ignored.
-        - containers: The parent modules of the layers, as absolute names that you could import,
-                      such as "mypackage.foo". (Optional.)
+        Returns:
+            The illegal dependencies in the form of a set of PackageDependency objects.
+            Each package dependency is for a different permutation of two layers for which there
+            is a violation, and contains information about the illegal chains of imports from the
+            lower layer (the 'upstream') to the higher layer (the 'downstream').
 
-        Returns the illegal dependencies in the form of a set of PackageDependency objects.
-        Each package dependency is for a different permutation of two layers for which there
-        is a violation, and contains information about the illegal chains of imports from the
-        lower layer (the 'upstream') to the higher layer (the 'downstream').
-
-        Raises NoSuchContainer if the container is not a module in the graph.
+        Raises:
+            NoSuchContainer: if the container is not a module in the graph.
         """
         layers = _parse_layers(layers)
         try:
@@ -441,7 +449,7 @@ class ImportGraph:
                 containers=set(containers) if containers else set(),
             )
         except rust.NoSuchContainer as e:
-            raise NoSuchContainer(str(e))
+            raise NoSuchContainer(str(e)) from None
 
         return _dependencies_from_tuple(result)
 
@@ -450,7 +458,8 @@ class ImportGraph:
         Identify a set of imports that, if removed, would make the package locally acyclic.
         """
         if not self._rustgraph.contains_module(package):
-            raise ModuleNotPresent(f'"{package}" not present in the graph.')
+            msg = f'"{package}" not present in the graph.'
+            raise ModuleNotPresent(msg)
         return self._rustgraph.nominate_cycle_breakers(package)
 
     # Dunder methods
@@ -458,8 +467,9 @@ class ImportGraph:
 
     def __repr__(self) -> str:
         """
-        Display the instance in one of the following ways:
+        Display the instance.
 
+        This can be one of the following ways:
             <ImportGraph: empty>
             <ImportGraph: 'one', 'two', 'three', 'four', 'five'>
             <ImportGraph: 'one', 'two', 'three', 'four', 'five', ...>

@@ -5,12 +5,12 @@ import logging
 import re
 from collections.abc import Iterable
 
-import pytest  # type: ignore
+import pytest
 
 from grimp import PackageDependency, Route
 from grimp.application.graph import ImportGraph
-from grimp.exceptions import NoSuchContainer
 from grimp.domain.valueobjects import Layer
+from grimp.exceptions import NoSuchContainer
 
 
 class TestSingleOrNoContainer:

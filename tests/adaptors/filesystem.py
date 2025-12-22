@@ -1,10 +1,12 @@
-from typing import Any
+from __future__ import annotations
+
 from collections.abc import Generator
+from typing import Any
 
 import yaml
 
-from grimp.application.ports.filesystem import AbstractFileSystem, BasicFileSystem
 from grimp import _rustgrimp as rust  # type: ignore[attr-defined]
+from grimp.application.ports.filesystem import AbstractFileSystem, BasicFileSystem
 
 DEFAULT_MTIME = 10000.0
 

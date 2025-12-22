@@ -1,8 +1,9 @@
+import pytest
+
 from grimp.adaptors.modulefinder import ModuleFinder
 from grimp.application.ports.modulefinder import FoundPackage, ModuleFile
 from grimp.domain.valueobjects import Module
 from tests.adaptors.filesystem import DEFAULT_MTIME, FakeFileSystem
-import pytest
 
 
 def test_happy_path():
@@ -131,8 +132,6 @@ def test_namespaced_packages(package_name: str, package_directory: str, expected
                     non_python_directory/
                         six/
                             README.txt
-                    
-                    
         """
     )
 
@@ -218,14 +217,14 @@ def test_ignores_invalid_identifier_directories():
 
     module_files = {
         ModuleFile(module=Module(name), mtime=DEFAULT_MTIME)
-        for name in {
+        for name in (
             "namespacepackage.foo.valid_underscore_name",
             "namespacepackage.foo.valid_underscore_name.mod",
             "namespacepackage.foo.valid_non_àscii",
             "namespacepackage.foo.valid_non_àscii.mod",
             "namespacepackage.bar",
             "namespacepackage.bar.mod",
-        }
+        )
     }
     assert result == FoundPackage(
         name="namespacepackage",

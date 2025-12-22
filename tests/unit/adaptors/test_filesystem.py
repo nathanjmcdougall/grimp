@@ -1,9 +1,13 @@
-from typing import TypeAlias
+from __future__ import annotations
+
 from copy import copy
-import pytest  # type: ignore
+from typing import TypeAlias
+
+import pytest
+
+from grimp import _rustgrimp as rust  # type: ignore[attr-defined]
 from grimp.application.ports.filesystem import BasicFileSystem
 from tests.adaptors.filesystem import FakeFileSystem
-from grimp import _rustgrimp as rust  # type: ignore[attr-defined]
 
 
 class _Base:

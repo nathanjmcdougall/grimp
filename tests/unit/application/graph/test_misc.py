@@ -1,4 +1,4 @@
-import pytest  # type: ignore
+import pytest
 
 from grimp.application.graph import ImportGraph
 from grimp.exceptions import ModuleNotPresent

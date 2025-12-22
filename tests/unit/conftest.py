@@ -1,7 +1,7 @@
-import pytest  # type: ignore
+import pytest
 
-from grimp.application.graph import ImportGraph
 from grimp.adaptors.modulefinder import ModuleFinder
+from grimp.application.graph import ImportGraph
 from tests.config import override_settings
 
 

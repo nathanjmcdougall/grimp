@@ -1,6 +1,6 @@
-import pytest  # type: ignore
+import pytest
 
-from grimp.domain.valueobjects import DirectImport, Module, Layer
+from grimp.domain.valueobjects import DirectImport, Layer, Module
 
 
 class TestModule:

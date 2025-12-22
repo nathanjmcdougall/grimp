@@ -1,7 +1,7 @@
 from grimp.application.config import settings
 
 
-class override_settings:
+class override_settings:  # noqa: N801
     def __init__(self, **settings_to_override):
         self.settings_to_override = settings_to_override
 

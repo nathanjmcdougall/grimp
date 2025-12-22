@@ -1,6 +1,9 @@
+from __future__ import annotations
+
 import re
 from unittest.mock import sentinel
-import pytest  # type: ignore
+
+import pytest
 
 from grimp.application import usecases
 from grimp.application.ports.caching import Cache

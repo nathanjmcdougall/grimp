@@ -1,14 +1,15 @@
-import uuid
-import random
-import pytest
-import json
 import importlib
+import json
+import random
+import uuid
+from copy import deepcopy
 from pathlib import Path
 
-from grimp.application.graph import ImportGraph
-from grimp import PackageDependency, Route
+import pytest
+
 import grimp
-from copy import deepcopy
+from grimp import PackageDependency, Route
+from grimp.application.graph import ImportGraph
 
 
 @pytest.fixture(scope="module")
@@ -354,7 +355,7 @@ def test_build_django_from_cache_a_few_misses(benchmark, number_of_misses: int):
     grimp.build_graph("django")
     # Add some modules which won't be in the cache.
     # (Use some real python, which will take time to parse.)
-    django_path = Path(importlib.util.find_spec("django").origin).parent  # type: ignore
+    django_path = Path(importlib.util.find_spec("django").origin).parent  # type: ignore[arg-type,union-attr]
     module_to_copy = django_path / "forms" / "forms.py"
     module_contents = module_to_copy.read_text()
     extra_modules = [
